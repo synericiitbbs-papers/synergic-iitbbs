@@ -1,10 +1,10 @@
-.start {
+/* .start {
   /* min-height: 100vh; */
   /* padding: 2rem; */
   /* display: flex;
   flex-direction: column;
   align-items: center; */
-}
+ */
 
 .heading {
   height: 5rem;
@@ -173,4 +173,111 @@ margin: 10px;
 }
 
 
+
+.bg-circle-extra {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border: 2px solid #d4e95e; /* Outlined circle */
+    border-radius: 50%;
+    top: 20%;
+    right: 15%;
+    z-index: 0;
+}
+
+
+
+/* Updated Wrapper with Background Circles */
+.login-page-wrapper {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    position: relative;
+    overflow: hidden; /* Prevents circles from creating scrollbars */
+}
+
+/* Background Circle 1 - Top Left */
+.login-page-wrapper::before {
+    content: "";
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #d4e95e 0%, #d4e95ef0 100%);
+    top: -100px;
+    left: -100px;
+    z-index: 0;
+}
+
+/* Background Circle 2 - Bottom Right */
+.login-page-wrapper::after {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #3d3d3e11 0%, transparent 70%);
+    bottom: -50px;
+    right: -50px;
+    z-index: 0;
+}
+
+
+
+/* Existing styles for buttons and inputs (Updated for better fit) */
+.login-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    /* Adding a soft shadow to help it pop against the circles */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.sign-in-btn {
+    background-color: #D4E95E;
+    color: #111;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* ... keep your existing .login-page-wrapper and before/after ... */
+
+/* Bottom Left - Small Outlined Circle */
+.bg-circle-bottom-left {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border: 2px solid #d4e95ee5; /* Low opacity lime green */
+    border-radius: 50%;
+    bottom: 10%;
+    left: 5%;
+    z-index: 0;
+}
+
+/* Bottom Right - Large Faded Circle */
+.bg-circle-bottom-right {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    background: #D4E95E;
+    border-radius: 50%;
+    bottom: -80px;
+    right: 5%;
+    z-index: 0;
+}
+
+/* Ensure circles hide on mobile to keep the form clean */
+@media (max-width: 768px) {
+    .bg-circle-bottom-left, 
+    .bg-circle-bottom-right {
+        display: none;
+    }
+}
 

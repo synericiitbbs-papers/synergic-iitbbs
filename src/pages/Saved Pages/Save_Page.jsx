@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import "./Save_Page.css";
+// 1. Import your Loader component
+import Loader from "../Loading/Loading"; 
 
 const Save_Page = () => {
   const [collections, setCollections] = useState([]);
@@ -11,28 +13,31 @@ const Save_Page = () => {
 
   const username = Cookies.get("username");
 
-  // 1. Initial Fetch: Get all collections for the user
+  // Initial Fetch: Get all collections
   useEffect(() => {
     const fetchCollections = async () => {
-      if (!username) return;
+      if (!username) {
+        setLoading(false);
+        return;
+      }
       try {
         const res = await fetch(`https://synergic-backend.onrender.com/api/saved-papers/${username}`);
         const data = await res.json();
         if (data.success && data.data.length > 0) {
           setCollections(data.data);
-          // Default to the first collection
           setActiveCollection(data.data[0]);
         }
       } catch (err) {
         console.error("Error fetching collections:", err);
       } finally {
+        // This stops the initial full-page loader
         setLoading(false);
       }
     };
     fetchCollections();
   }, [username]);
 
-  // 2. Fetch details for each paper when active collection changes
+  // Fetch details when active collection changes
   useEffect(() => {
     const fetchAllPaperDetails = async () => {
       if (!activeCollection || !activeCollection.papers) return;
@@ -57,7 +62,8 @@ const Save_Page = () => {
     fetchAllPaperDetails();
   }, [activeCollection]);
 
-  
+  // 2. Show the loader while the initial data is being fetched
+  if (loading) return <Loader />;
 
   return (
     <div className="save-page-container">
@@ -70,11 +76,11 @@ const Save_Page = () => {
             onClick={() => setActiveCollection(col)}
           >
             <div className="folder-icon">
-        <img 
-          src="https://img.icons8.com/material-rounded/96/folder-invoices.png" 
-          alt="folder-icon"
-          className="icon-img"
-        />
+              <img 
+                src="https://img.icons8.com/material-rounded/96/folder-invoices.png" 
+                alt="folder-icon"
+                className="icon-img"
+              />
             </div>
             <p className="folder-title">{col.collection_name}</p>
           </div>
@@ -95,8 +101,16 @@ const Save_Page = () => {
             </tr>
           </thead>
           <tbody>
+            {/* 3. Also use the loader for the table when switching folders */}
             {papersLoading ? (
-              <tr><td colSpan="4" className="table-loader">Fetching paper details...</td></tr>
+              <tr>
+                <td colSpan="4" style={{ textAlign: 'center', padding: '40px' }}>
+                  <div className="table-loader-container">
+                     {/* You can use a smaller spinner here or the same Loader */}
+                     <p>Loading papers...</p> 
+                  </div>
+                </td>
+              </tr>
             ) : paperDetails.length > 0 ? (
               paperDetails.map((paper) => (
                 <tr key={paper._id}>

@@ -5,7 +5,7 @@ import { auth, googleProvider, signInWithPopup } from "../../firebase";
 import './Login1.css';
 import illustration from '../../images/login.png';
 import Toast from '../Toast/Toast';
-
+import logo from '../../images/logo1.png'; //
 function Login({ setAuth }) {  
     const [credentials, setCredentials] = useState({ username: "", password: "" });
     const [loading, setLoading] = useState(false);
@@ -54,6 +54,13 @@ function Login({ setAuth }) {
 
     return (
         <div className="login-page-wrapper">
+            <div className="top-left-logo">
+                <img src={logo} alt="Company Logo" />
+            </div>
+            <div className="bg-circle-top-left"></div>
+            <div className="bg-circle-bottom-left"></div>
+            <div className="bg-circle-bottom-right"></div>
+        <div className="bg-circle-extra"></div> {/* Optional extra circle */}
             {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
             
             <div className="book-container">
@@ -82,7 +89,13 @@ function Login({ setAuth }) {
                             </div>
 
                             <button type="submit" className="sign-in-btn" disabled={loading}>
-                                {loading ? "Signing In..." : "Sign in"}
+                                {loading ? (
+        <div className="loading-container">
+            <div className="spinner"></div>
+        </div>
+    ) : (
+        "Sign in"
+    )}
                             </button>
                         </form>
 

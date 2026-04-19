@@ -109,9 +109,6 @@
   display: none;
 }
 
-.options input[type="radio"]:checked + label {
-  display: none;
-}
 
 /* Logic for displaying selected text */
 .select:has(input#all-b:checked) .selected::before { content: attr(data-default); }
@@ -210,54 +207,148 @@
   transform: scale(0.95);
 }
 
-
 /* 1. The Container */
 .main56 {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center; /* Centers the remaining 2 cards on the bottom row */
   
-  /* Forces the cards to start from the left */
-  justify-content: flex-start; 
+  /* REMOVED GAP: Setting to 0 so cards touch each other */
+  gap: 1.8%; 
   
-  /* Adjust this gap to change spacing between cards */
-  gap: 20px; 
-  
-  /* This width must be large enough to fit 3 cards + gaps */
   max-width: 1200px; 
   margin: 40px auto; 
-  padding: 0 20px;
+  padding: 0; /* Remove padding if you want it flush to the screen edges */
 }
 
 /* 2. The Card Wrapper */
-.main56 > div {
-  /* We force each card to take up exactly 1/3 of the row.
-     The calculation: 100% / 3 minus the total gap space divided by 3.
-  */
-  flex: 0 0 calc(33.333% - 14px); 
+/* Note: Using .main_card_wrapper since that is the top-level class in your Card.jsx */
+.main56 .main_card_wrapper {
+  /* Exactly 1/3 of the container width */
+  flex: 0 0 33.3333%; 
   
-  min-width: 300px; /* Adjust this based on your Card's actual width */
+  /* Ensure there are no external margins on the card itself */
+  margin: 0;
+  margin-bottom:2.4%; 
   box-sizing: border-box;
+  
+  /* Optional: If your card has a shadow that gets cut off, 
+     you might want a tiny bit of padding INSIDE the wrapper instead of margin */
+  padding: 5px; 
 }
 
 /* 3. Responsive Fixes */
 
-/* Tablet: If 3 cards are too cramped, go to 2 per row */
+/* Tablet: 2 cards per row (50% each) */
 @media (max-width: 1050px) {
-  .main56 {
-    max-width: 800px; /* Limit container width for 2 cards */
-  }
-  .main56 > div {
-    flex: 0 0 calc(50% - 10px);
+  .main56 .main_card_wrapper {
+    flex: 0 0 50%;
   }
 }
 
-/* Mobile: Single column */
+/* Mobile: 1 card per row (100%) */
+/* Mobile: Adjusting card size */
 @media (max-width: 650px) {
   .main56 {
-    justify-content: center; /* Center the single card on mobile */
+    padding: 0 10px; /* Give a little breathing room on the edges */
+    gap: 15px;      /* Add a small gap back so they don't look like one giant block on mobile */
   }
-  .main56 > div {
-    flex: 0 0 100%;
+
+  .main56 .main_card_wrapper {
+    flex: 0 0 100%;  /* Still 1 per row */
+    min-width: unset; /* Remove the 300px min-width so it can shrink */
   }
+
+  /* Target the actual card inside the wrapper */
+  .card_inner {
+    padding: 15px !important; /* Tighten the inner padding */
+  }
+
+  /* Scale down text so it fits the smaller height */
+  .subject_name {
+    font-size: 1.1rem !important;
+  }
+
+  .subject_id {
+    font-size: 0.8rem !important;
+  }
+
+  .materials_count {
+    font-size: 0.75rem !important;
+  }
+
+}
+
+/* Base Search Button */
+.paper_find {
+  background-color: transparent;
+  color: #f8f8f8; /* Matching your theme color */
+  width: 9em;
+  height: 2.75em;
+  border-radius: 5px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+}
+
+/* Hover State */
+.paper_find:not(:disabled):hover {
+  background-color: #C6EF4E;
+  color: #000000;
+}
+
+/* Arrow Styling */
+.search-arrow {
+  width: 8em;
+  position: absolute;
+  left: 0.8em;
+  opacity: 0;
+  transform: translateX(-5px);
+  transition: all 0.5s ease;
+}
+
+/* Text Styling */
+.paper_find .text {
+  transition: all 0.5s ease;
+  transform: translateX(0);
+}
+
+/* Hover Animation: Slide Text Right, Show Arrow */
+.paper_find:not(:disabled):hover .text {
+  transform: translateX(12px);
+}
+
+.paper_find:not(:disabled):hover .search-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Loading State Adjustments */
+.paper_find.loading {
+  background-color: #000000;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.26);
+  border-top: 2px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.OK svg{
+  width:16px;
 }

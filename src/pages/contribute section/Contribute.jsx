@@ -109,7 +109,6 @@ export default function Contribute() {
                     onClose={handleCloseToast} 
                 />
             )}
-
             <img src={contri} className="con_img" alt="Contribute" />
             
             <div className="main23">
@@ -155,7 +154,10 @@ export default function Contribute() {
         </div>
     ) : (
         <div className="drop-zone-content">
-            <img src={book} alt="book" className="custom-book-icon" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+</svg>
+
             <p>Drag your files here</p>
         </div>
     )}

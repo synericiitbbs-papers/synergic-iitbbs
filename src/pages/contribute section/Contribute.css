@@ -1,5 +1,4 @@
 .heading23 {
-    font-family: "Roboto, sans-serif";
     font-size: 32px;
     color: #45474B;
     font-weight: 500;
@@ -46,7 +45,12 @@
     align-items: center;
     justify-content: center;
     gap: 12px;
-    color: #6b7280; /* Greyish color for the text */
+    color: #6b7280; 
+    font-size: 16px;/* Greyish color for the text */
+}
+.drop-zone-content svg {
+    width: 28px; /* Adjust size to match your image */
+    height: auto;
 }
 
 /* Style for your specific imported book image */
@@ -62,8 +66,9 @@
 }
 
 .con_img {
-    width: 50%;
-    max-width: 650px;
+    margin-right:6%;
+    width: 24%;
+    max-width: 450px;
     height: auto;
 }
 /* The Main Card */
@@ -80,8 +85,7 @@
 
 /* Card Heading */
 .heading23 {
-    font-family: 'Roboto', sans-serif;
-    font-size: 42px;
+    font-size: 28px;
     font-weight: 500;
     color: #000;
     text-align: center;
@@ -94,7 +98,7 @@
     height: 48px;
     border: 1px solid #777; /* Subtle grey border */
     border-radius: 8px;
-    padding: 0 15px;
+    padding:0 10px;
     font-size: 16px;
     color: #333;
     margin-bottom: 20px;
@@ -157,7 +161,7 @@
     color: #000;
     border: none;
     border-radius: 8px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
     cursor: pointer;
     transition: filter 0.2s;

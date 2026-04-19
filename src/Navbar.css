@@ -10,8 +10,8 @@
 .synergic-navbar {
   display: flex;
   align-items: center;
-  gap:10%;
-  padding: 15px 5%;
+  gap:8%;
+  padding: 15px 4%;
   background-color: transparent;
   position: relative;
   z-index: 1000;
@@ -19,7 +19,7 @@
 
 /* --- Logo --- */
 .nav-logo img {
-  width: 180px;
+  width: 240px;
   height: auto;
   display: block;
 }
