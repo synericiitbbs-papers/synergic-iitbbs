@@ -13,22 +13,22 @@ import epImg from './../../images/ep.png';
 import othersImg from './../../images/others.png';
 import diagonal from './../../images/diagonal.png';
 
-export default function Card({ subject, code, num_mat }) {
+export default function Card({ subject, code, num_mat, options = [] }) {
   const navigate = useNavigate();
   
-  // State to manage the actual count from the API
   const [materialCount, setMaterialCount] = useState(num_mat || 0);
   const [isCountLoading, setIsCountLoading] = useState(false);
 
-  // 1. Fetch real paper count via API
-  useEffect(() => {
-    const fetchPaperCount = async () => {
-      // If we already have a valid number from props (not 0 or null), we can skip fetching
-      if (num_mat && num_mat !== "0") return;
+  // LOGIC: A "Group" has an empty code and existing options
+  const isElectiveGroup = (!code || code.trim() === "") && options.length > 0;
 
+  useEffect(() => {
+    // Only fetch counts for individual subjects that have a code
+    if (isElectiveGroup || (num_mat && num_mat !== "0")) return;
+
+    const fetchPaperCount = async () => {
       setIsCountLoading(true);
       try {
-        // Replace with your actual count endpoint
         const response = await fetch(`https://synergic-backend.onrender.com/api/countPapers/${subject.replace(/\s+/g, '_')}`);
         const data = await response.json();
         
@@ -36,7 +36,7 @@ export default function Card({ subject, code, num_mat }) {
           setMaterialCount(data.count);
         }
       } catch (error) {
-        console.error("Error fetching material count:", error);
+        console.error("Error fetching count:", error);
         setMaterialCount(0);
       } finally {
         setIsCountLoading(false);
@@ -44,62 +44,55 @@ export default function Card({ subject, code, num_mat }) {
     };
 
     fetchPaperCount();
-  }, [subject, num_mat]);
+  }, [subject, num_mat, isElectiveGroup]);
 
-  // 2. Department Image Logic
-  const departmentImages = {
-    cs: csImg,
-    ec: ecImg,
-    ee: eeImg,
-    me: meImg,
-    ml: mmImg,
-    ce: ceImg,
-    ep: epImg,
-  };
-
-  const prefix = code.toLowerCase().match(/^[a-z]+/)?.[0];
+  // Image Prefix Logic
+  const departmentImages = { cs: csImg, ec: ecImg, ee: eeImg, me: meImg, ml: mmImg, ce: ceImg, ep: epImg };
+  const prefix = code ? code.toLowerCase().match(/^[a-z]+/)?.[0] : "others";
   const imageSrc = departmentImages[prefix] || othersImg;
 
-  // 3. Navigation Logic
+  // NAVIGATION LOGIC
   const handleExplore = () => {
-    const route = `/questionpapers/${subject.replace(/\s+/g, '_')}`;
-    navigate(route);
+    if (isElectiveGroup) {
+      // Navigate to the selection page, passing options in the state
+      navigate(`/choose-subject/${subject.replace(/\s+/g, '_')}`, { 
+        state: { electiveOptions: options, parentSubject: subject } 
+      });
+    } else {
+      // Normal subject navigation
+      navigate(`/questionpapers/${subject.replace(/\s+/g, '_')}`);
+    }
   };
 
   return (
     <div className="main_card_wrapper">
-      <div className="card_inner">
+      <div className={`card_inner ${isElectiveGroup ? 'elective_card' : ''}`}>
         
-        {/* Top: Icon/Logo Section */}
         <div className="icon_box">
-          <img src={imageSrc} alt={`${prefix}-icon`} className="subject_icon" />
+          <img src={imageSrc} alt="subject-icon" className="subject_icon" />
         </div>
 
-        {/* Middle: Text Information */}
         <div className="text_box">
           <h2 className="subject_name">{subject}</h2>
-          <p className="subject_id">{code}</p>
+          <p className="subject_id">
+            {isElectiveGroup ? "Elective Group" : (code || "Core Subject")}
+          </p>
         </div>
 
-        {/* Bottom Left: Dynamic Materials Count */}
         <span className="materials_count">
-          {isCountLoading ? "..." : materialCount} Materials Available
+          {isElectiveGroup 
+            ? `${options.length} Subjects available` 
+            : `${isCountLoading ? "..." : materialCount} Materials Available`}
         </span>
 
-        {/* Bottom Right: Explore Button */}
         <button 
           type="button" 
           className="explore_btn" 
           onClick={handleExplore}
-          aria-label={`Explore ${subject}`}
         >
           <span className="btn_text">Explore</span>
           <span className="btn_icon">
-            <img 
-              src={diagonal}
-              alt="arrow" 
-              className="btn_svg"
-            />
+            <img src={diagonal} alt="arrow" className="btn_svg" />
           </span>
         </button>
       </div>

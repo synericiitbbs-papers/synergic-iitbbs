@@ -159,6 +159,7 @@ function Papers() {
               code={subject.code}
               num_mat={subject.materials_available}
               semester={semester}
+              options={subject.options || []}
             />
           ))
         ) : (

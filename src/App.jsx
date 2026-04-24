@@ -11,6 +11,8 @@ import Save_Page from "./pages/Saved Pages/Save_Page.jsx";
 import ProtectedLayout from "./ProtectedLayout.jsx";
 import Contact from "./pages/Contact/Contact.jsx";
 import Signup from "./pages/login section/Signup.jsx";
+import Subjects from "./pages/special materials/Subjects.jsx";
+import SubjectSelection from "./pages/special materials/SubjectSelection.jsx";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
@@ -50,6 +52,7 @@ export default function App() {
           element={<ProtectedRouteWrapper handleAuth={handleAuth} />}
         />
       ) : (
+        
         <Route path="*" element={<Navigate to="/" />} />
       )}
     </Routes>
@@ -77,6 +80,7 @@ function ProtectedRouteWrapper({ handleAuth }) {
         <Route path="/questionpapers" element={<Papers />} />
         <Route path="/contribute" element={<Contribute />} />
         <Route path="/questionpapers/:subject" element={<QuestionPaper />} />
+        <Route path="/choose-subject/:groupName" element={<SubjectSelection />} />
         <Route path="/ContactUs" element={<Contact />} />
         
         {/* Fallback for protected routes */}

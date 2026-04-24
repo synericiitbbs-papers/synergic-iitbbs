@@ -124,7 +124,7 @@ const QuestionPapers = () => {
       setShowMainModal(true);
     }
   };
-
+const formattedSubject = subject.replace(/_/g, " ");
   const closeAllModals = () => {
     setShowMainModal(false);
     setShowCreateModal(false);
@@ -136,7 +136,7 @@ const QuestionPapers = () => {
 
   return (
     <div className="qp-container">
-      <h2 className="qp-title">{subject} Papers</h2>
+      <h2 className="qp-title">{formattedSubject} Papers</h2>
 
       <div className="slider-wrapper">
         <button className="scroll-btn left" onClick={() => scrollFolders("left")} aria-label="Scroll Left">
